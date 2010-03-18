@@ -1,0 +1,50 @@
+#!/bin/sh
+green='\e[0;32m'
+yellow='\e[0;33m'
+white='\e[0;37m'
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+if [ ! -e /usr/bin/antico ]; then
+    ln -s ${PWD}/antico /usr/bin/antico
+fi
+
+if [ -d /etc/X11/sessions ]; then
+    cp antico-gdm.desktop /etc/X11/sessions/
+fi
+
+if [ -d /usr/share/xsessions ]; then
+    cp antico-kdm.desktop /usr/share/xsessions/
+fi
+
+if [ -d /usr/share/apps/kdm/sessions ]; then
+    cp antico-kdm.desktop /usr/share/apps/kdm/sessions/
+fi
+
+if [  ! -f /usr/lib/libaudio.so.2 ]; then
+    cp libs/libaudio.so.2 /usr/lib
+fi
+
+if [  ! -f /usr/lib/libQtCore.so.4 ]; then
+    cp libs/libQtCore.so.4 /usr/lib
+fi
+
+if [  ! -f /usr/lib/libQtGui.so.4 ]; then
+    cp libs/libQtGui.so.4 /usr/lib
+fi
+
+if [  ! -f /usr/lib/libQtDBus.so.4 ]; then
+    cp libs/libQtDBus.so.4 /usr/lib
+
+if [  ! -f /usr/lib/libQtXml.so.4 ]; then
+    cp libs/libQtXml.so.4 /usr/lib
+fi
+
+
+
+echo -e "${white}***********************************************"
+echo -e "        ${green}Antico ${yellow}successfully installed${white}"
+echo -e "***********************************************"
